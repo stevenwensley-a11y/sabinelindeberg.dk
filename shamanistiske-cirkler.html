@@ -30,6 +30,7 @@
   </script>
 
 <meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shamanistiske Cirkler — Indre Kald og Kraft</title>
 <meta name="description" content="Shamanistiske cirkler med meditation, kraftsang og ritual. Forbind med naturens visdom og fællesskabets styrke hos Sabine Lindeberg.">
@@ -575,6 +576,56 @@ footer h4 {
   .cta-buttons { flex-direction: column; align-items: center; }
   .content-section-inner { gap: 40px; }
 }
+
+    /* FE6: View Transitions */
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root) { animation: vt-fade-out 0.25s ease; }
+    ::view-transition-new(root) { animation: vt-fade-in 0.25s ease; }
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-fade-in { from { opacity: 0; } }
+
+    /* FE3: CSS @property gradient animation */
+    @property --grad-angle {
+      syntax: '<angle>';
+      initial-value: 135deg;
+      inherits: false;
+    }
+    @keyframes gradient-shift {
+      0%   { --grad-angle: 135deg; }
+      50%  { --grad-angle: 225deg; }
+      100% { --grad-angle: 135deg; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .btn-gold.gradient-animated {
+        animation: gradient-shift 6s ease-in-out infinite;
+        background: linear-gradient(var(--grad-angle), var(--gold), #B8941E, var(--gold-light));
+        background-size: 200% 200%;
+      }
+    }
+
+    /* FE4: SVG logo line-drawing animation */
+    .nav-logo-svg { display: none; }
+    .nav-brand.has-svg .nav-logo-text { display: none; }
+    .nav-brand.has-svg .nav-logo-svg { display: block; }
+    .nav-logo-svg text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 600;
+      fill: var(--gold);
+      stroke: var(--gold);
+      stroke-width: 0.6;
+      fill-opacity: 0;
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .nav-logo-svg text { animation: logo-draw 2.5s ease forwards, logo-fill 0.6s ease 2.2s forwards; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-logo-svg text { stroke-dashoffset: 0; fill-opacity: 1; stroke-width: 0; }
+    }
+    @keyframes logo-draw { to { stroke-dashoffset: 0; } }
+    @keyframes logo-fill { to { fill-opacity: 1; stroke-width: 0; } }
 </style>
 </head>
 <body>
@@ -582,9 +633,10 @@ footer h4 {
 <!-- ========== NAVIGATION ========== -->
 <nav>
   <div class="container">
-    <a href="index.html" class="nav-brand">
+    <a href="index.html" class="nav-brand has-svg">
       <img src="materiale/logo-vertical.png" alt="Indre Kald og Kraft logo" class="nav-logo-img">
       <span class="nav-logo-text">Indre Kald<br>og Kraft</span>
+      <svg class="nav-logo-svg" viewBox="0 0 110 40" width="110" height="40" xmlns="http://www.w3.org/2000/svg" aria-label="Indre Kald og Kraft"><text><tspan x="0" y="16">Indre Kald</tspan><tspan x="0" y="36">og Kraft</tspan></text></svg>
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html">Forside</a></li>
@@ -615,7 +667,7 @@ footer h4 {
       <span class="hero-label">Fællesskab, ritual og naturvisdom</span>
       <h1>Shamanistiske Cirkler</h1>
       <p class="hero-tagline">Forbind med naturens kraft og dit inderste selv</p>
-      <a href="kontakt.html" class="btn btn-gold">Book en samtale</a>
+      <a href="kontakt.html" class="btn btn-gold gradient-animated">Book en samtale</a>
     </div>
   </div>
 </section>
